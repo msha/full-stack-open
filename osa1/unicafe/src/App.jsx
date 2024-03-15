@@ -8,17 +8,17 @@ const Header = () => {
   return (<h1>give feedback</h1>)
 }
 
-const StateCounter = ({name,count}) => {
-  return (<div>{name} {count}</div>)
+const StatisticLine = ({text,count}) => {
+  return (<div>{text} {count}</div>)
 }
 
 const Statistics = ({good,neutral,bad}) => {
   if(good || neutral ||bad) {
   return (<div><h1>Statistics</h1>
   
-  <StateCounter name="good" count={good}></StateCounter>
-  <StateCounter name="neutral" count={neutral}></StateCounter>
-  <StateCounter name="bad" count={bad}></StateCounter>
+  <StatisticLine text="good" count={good}></StatisticLine>
+  <StatisticLine text="neutral" count={neutral}></StatisticLine>
+  <StatisticLine text="bad" count={bad}></StatisticLine>
   <div>all {(good+neutral+bad)}</div>
   <div>average {(good - bad)/(good+neutral+bad)}</div>
   <div>positive {(good)/(good+neutral+bad)}</div>
