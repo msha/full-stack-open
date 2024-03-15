@@ -9,20 +9,22 @@ const Header = () => {
 }
 
 const StatisticLine = ({text,count}) => {
-  return (<div>{text} {count}</div>)
+  return (<tr><td>{text}</td><td>{count}</td></tr>)
 }
 
 const Statistics = ({good,neutral,bad}) => {
   if(good || neutral ||bad) {
   return (<div><h1>Statistics</h1>
-  
+  <table>
+  <tbody>
   <StatisticLine text="good" count={good}></StatisticLine>
   <StatisticLine text="neutral" count={neutral}></StatisticLine>
   <StatisticLine text="bad" count={bad}></StatisticLine>
-  <div>all {(good+neutral+bad)}</div>
-  <div>average {(good - bad)/(good+neutral+bad)}</div>
-  <div>positive {(good)/(good+neutral+bad)}</div>
-
+  <tr><td>all</td><td>{(good+neutral+bad)}</td></tr>
+  <tr><td>average</td><td>{(good - bad)/(good+neutral+bad)}</td></tr>
+  <tr><td>positive</td><td>{((good)/(good+neutral+bad))*100} %</td></tr>
+  </tbody>
+  </table>
 
   </div>
   )
