@@ -4,6 +4,16 @@ const Votes = ({votes}) => {
   return (<div>has {votes} votes</div>)
 }
 
+const Anectode = ({title, anecdote, votes}) => {
+  return (
+  <>
+  <h1>{title}</h1>
+  <a>{anecdote}</a>
+  <Votes votes={votes}></Votes>
+  </>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -21,12 +31,12 @@ const App = () => {
 
   return (
     <div>
-      {anecdotes[selected]}
-      <Votes votes={votes[selected]}></Votes>
+      <Anectode title="Anecdote of the day" anecdote={anecdotes[selected]} votes={votes[selected]}></Anectode>
       <br /><button onClick={() => {
         let copy = [...votes]
         copy[selected] += 1
-        setVotes(copy)}}>vote</button><button onClick={() => {setSelected(Math.round(Math.random()*7))}}>next anecdote</button>
+        setVotes(copy)}}>vote</button><button onClick={() => {setSelected(Math.floor(Math.random()*8))}}>next anecdote</button>
+        <Anectode title="Anecdote with most votes" anecdote={anecdotes[votes.indexOf(Math.max(...votes))]} votes={votes[votes.indexOf(Math.max(...votes))]}></Anectode>
     </div>
   )
 }
