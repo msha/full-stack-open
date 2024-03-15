@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div>
       {anecdotes[selected]}
-      <br /><button onClick={() => {setSelected(selected+1)}}>next anecdote</button>
+      <br /><button onClick={() => {setSelected(Math.round(Math.random()*8))}}>next anecdote</button>
     </div>
   )
 }
