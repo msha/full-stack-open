@@ -16,7 +16,12 @@ const Statistics = ({good,neutral,bad}) => {
   return (<div><h1>Statistics</h1>
   <StateCounter name="good" count={good}></StateCounter>
   <StateCounter name="neutral" count={neutral}></StateCounter>
-  <StateCounter name="bad" count={bad}></StateCounter></div>)
+  <StateCounter name="bad" count={bad}></StateCounter>
+  <div>all {(good+neutral+bad)}</div>
+  <div>average {(good - bad)/(good+neutral+bad)}</div>
+  <div>positive {(good)/(good+neutral+bad)} %</div>
+  </div>
+  )
 }
 
 const App = () => {
