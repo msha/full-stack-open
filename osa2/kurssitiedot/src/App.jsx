@@ -19,10 +19,9 @@ const Part = (props) => {
     </p>
   )
 }
-const Total = (props) => {
-  let sum = 0;
-  props.parts.forEach(p =>  sum += p.exercises );
-  return <b>total of {sum} exercises</b>}
+const Total = ({parts}) => {
+  
+  return <b>total of {parts.reduce((acc,cur) => acc+cur.exercises, 0)} exercises</b>}
 const App = () => {
   const course = {
     name: 'Half Stack application development',
