@@ -22,7 +22,7 @@ const Part = (props) => {
 const Total = (props) => {
   let sum = 0;
   props.parts.forEach(p =>  sum += p.exercises );
-  return <p>Number of exercises {sum}</p>}
+  return <b>total of {sum} exercises</b>}
 const App = () => {
   const course = {
     name: 'Half Stack application development',
