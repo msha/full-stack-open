@@ -71,7 +71,15 @@ const App = () => {
       const newPerson = {name: newName, number: newNumber};
       personServer.create(newPerson).then((res) => setPersons(persons.concat(res)))
     } else {
-      alert(`${newName} is already added to phonebook`)
+      const promptReplace = confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      if(promptReplace) {
+
+        const newPerson = {name: newName, number: newNumber};
+        const id = persons.filter((o) => o.name === newName)[0].id;
+        personServer
+          .update(id,newPerson)
+          .then((res) => setPersons(persons.map(p => p.id !== id ? p : res)))
+      }
     }
     setNewNumber('')
     setNewName('')
