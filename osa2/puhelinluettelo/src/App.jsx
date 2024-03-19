@@ -62,7 +62,7 @@ const Form = ({addNewName,newName,newNumber,handleNameChange,handleNumberChange}
 
 const App = () => {
 
-  const [errorMessage, setErrorMessage] = useState({msg:'some error happened...',type:'error'})
+  const [errorMessage, setErrorMessage] = useState({msg:null,type:null})
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const handleNameChange = (event) => {
@@ -98,8 +98,11 @@ const App = () => {
         const id = persons.filter((o) => o.name === newName)[0].id;
         personServer
           .update(id,newPerson)
-          .then((res) => setPersons(persons.map(p => p.id !== id ? p : res)))
-          setNotifyMessage(`Updated ${newName}`, 'notify');
+          .then((res) => {
+            setPersons(persons.map(p => p.id !== id ? p : res));
+            setNotifyMessage(`Updated ${newName}`, 'notify');})
+          .catch(err => {setNotifyMessage(`Information of ${newName} has already been removed from the server`, 'delete');
+          setPersons(persons.filter(person => person.id !== id))})
       }
     }
     setNewNumber('')
