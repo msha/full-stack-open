@@ -3,21 +3,21 @@ import countryLookupService from './services/countries';
 
 
 
-const Countries = ({countrylist, filter, setCountry}) => {
+const Countries = ({countrylist, filter, getCountry, countrySetter}) => {
   if(filter === '') return (<div>enter filter</div>)
-  if(setCountry) {
-    filter = setCountry;
+  
+  let filteredCountries = countrylist.filter((c) => c.name.common.toLowerCase().includes(filter.toLowerCase()))
+  if(getCountry) {
+    filteredCountries = countrylist.filter((c) => c.name.common === getCountry);
   }
-  const filteredCountries = countrylist.filter((c) => c.name.common.toLowerCase().includes(filter.toLowerCase()))
   if(filteredCountries.length === 1) {
     return (<Country country={filteredCountries[0]}></Country>)
   }
   if (filteredCountries.length > 10 && filter !== '') return (<div>too many matches, specify another filter</div>)
-  return (filteredCountries.map(country => <div key={country.name.official}>{country.name.common}<button >show</button></div>));
+  return (filteredCountries.map(country => <div key={country.name.official}>{country.name.common}<button onClick={() => {countrySetter(country.name.common)}}>show</button></div>));
 }
 
 const Country = ({country}) => {
-  console.log(country);
   return (
     <>
   <h1>{country.name.common}</h1>
@@ -25,6 +25,7 @@ const Country = ({country}) => {
   <div>area {country.area}</div>
   <h2>languages</h2>
   {Object.values(country.languages).map((lan) => <li key={lan}> {lan} </li>)}
+  <br/>
   <img src={country.flags.png}></img>
   </>)
 }
@@ -37,6 +38,7 @@ function App() {
 
   const [countrylist, setCountrylist] = useState([]);
   const [filter, setFilter] = useState('');
+  const [getCountry, setGetCountry] = useState('');
 
   const hook = () => {
     countryLookupService
@@ -48,6 +50,11 @@ function App() {
 
   const filterSetter = (event) => {
     setFilter(event.target.value)
+    setGetCountry('')
+  }
+
+  const countrySetter = (name) => {
+    setGetCountry(name)
   }
 
   
@@ -57,7 +64,7 @@ function App() {
   return (
     <>
       <Filter filter={filter} filterSetter={filterSetter}></Filter>
-      <Countries countrylist={countrylist} filter={filter}></Countries>
+      <Countries countrylist={countrylist} filter={filter} getCountry={getCountry} countrySetter={countrySetter}></Countries>
     </>
   )
 }
