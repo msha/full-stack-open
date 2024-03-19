@@ -17,7 +17,21 @@ const Countries = ({countrylist, filter, getCountry, countrySetter}) => {
   return (filteredCountries.map(country => <div key={country.name.official}>{country.name.common}<button onClick={() => {countrySetter(country.name.common)}}>show</button></div>));
 }
 
+const Weather = ({weather}) => {
+  if(weather === null) return (<div>Loading Weather</div>)
+  return (<><h2>Weather in {weather.name}</h2>
+  <div>temperature {weather.main.temp} Celcius</div>
+  <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}></img>
+  <div>wind {weather.wind.speed} m/s</div></>)
+}
+
 const Country = ({country}) => {
+  const [weather, setWeather] = useState(null);
+  useEffect(() => {
+    const res = countryLookupService.getCapitalWeather(country.capitalInfo.latlng);
+    res.then((response) => setWeather(response))
+  },[])
+  
   return (
     <>
   <h1>{country.name.common}</h1>
@@ -27,6 +41,7 @@ const Country = ({country}) => {
   {Object.values(country.languages).map((lan) => <li key={lan}> {lan} </li>)}
   <br/>
   <img src={country.flags.png}></img>
+  <Weather weather={weather}></Weather>
   </>)
 }
 
