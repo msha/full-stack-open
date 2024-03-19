@@ -1,5 +1,6 @@
 import { useState, useEffect }  from 'react'
 import axios from 'axios';
+import personServer from './service/server'
 
 const Filter = ({filter, fun}) => {
   return (<div>filter shown with <input value={filter} onChange={fun}/></div>)
@@ -50,7 +51,7 @@ const App = () => {
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
-  useEffect(() => {axios.get('http://localhost:3001/persons').then((res) => {setPersons(res.data)})}, [])
+  useEffect(() => {personServer.getAll().then((res) => setPersons(res))}, [])
   const [newNumber, setNewNumber] = useState('')
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
@@ -58,7 +59,8 @@ const App = () => {
   const addNewName = (event) => {
     event.preventDefault();
     if(!persons.map((o) => o.name).includes(newName)) {
-      setPersons(persons.concat({name: newName, number: newNumber}))
+      const newPerson = {name: newName, number: newNumber};
+      personServer.create(newPerson).then(setPersons(persons.concat(newPerson)))
     } else {
       alert(`${newName} is already added to phonebook`)
     }
