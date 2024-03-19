@@ -11,9 +11,8 @@ const create = newObject => {
   return request.then(response => response.data)
 }
 
-const purge = newObject => {
-  const request = axios.post(baseUrl, newObject)
-  return request.then(response => response.data)
+const purge = (id) => {
+  return axios.delete(`${baseUrl}/${id}`)
 }
 
 const update = (id, newObject) => {

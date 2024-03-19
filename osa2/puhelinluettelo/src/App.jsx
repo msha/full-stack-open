@@ -6,11 +6,13 @@ const Filter = ({filter, fun}) => {
   return (<div>filter shown with <input value={filter} onChange={fun}/></div>)
 }
 
-const Person = ({name, number}) => {
-  return (<div>{name} {number}</div>)
+
+
+const Person = ({name, number, id, doDelete}) => {
+  return (<div>{name} {number}<button onClick={() => {doDelete(id)}}>delete</button></div>)
 }
 
-const Persons = ({persons,filter}) => {
+const Persons = ({persons,filter,doDelete}) => {
   return (
     persons
     .filter((person) => person.name
@@ -21,7 +23,9 @@ const Persons = ({persons,filter}) => {
       <Person
         key={person.name}
         name={person.name}
-        number={person.number}>
+        number={person.number}
+        id={person.id}
+        doDelete={doDelete}>
       </Person>
       )
     })
@@ -56,11 +60,16 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+  const doDelete = (id) => {
+    personServer.purge(id);
+    setPersons(persons.filter(person => person.id !== id));
+  }
+
   const addNewName = (event) => {
     event.preventDefault();
     if(!persons.map((o) => o.name).includes(newName)) {
       const newPerson = {name: newName, number: newNumber};
-      personServer.create(newPerson).then(setPersons(persons.concat(newPerson)))
+      personServer.create(newPerson).then((res) => setPersons(persons.concat(res)))
     } else {
       alert(`${newName} is already added to phonebook`)
     }
@@ -80,7 +89,7 @@ const App = () => {
       <h2>add a new</h2>
       <Form addNewName={addNewName} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}></Form>
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter}></Persons>
+      <Persons persons={persons} filter={filter} doDelete={doDelete}></Persons>
     </div>
   )
 
